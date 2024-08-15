@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Emotion Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script>
+        function toggleButtons() {
+            var imagePresent = !!document.getElementById('uploaded-image');
+            document.getElementById('predict-btn').disabled = !imagePresent;
+            document.getElementById('delete-btn').disabled = !imagePresent;
+        }
+
+        window.onload = function() {
+            toggleButtons();
+        }
+    </script>
+</head>
+<body>
+    <h1>Image Emotion Classifier</h1>
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" id="file-input" onchange="this.form.submit()" required>
+            <label for="file-input" class="file-label">
+                <i class="fas fa-upload"></i> Choose a file
+            </label>
+        </form>
+        {% if image_path %}
+            <div class="result">
+                <img id="uploaded-image" src="{{ url_for('static', filename=image_path) }}" alt="Uploaded Image">
+                <form method="POST">
+                    <button type="submit" name="predict" class="predict-btn" id="predict-btn">
+                        <i class="fas fa-check"></i> Predict
+                    </button>
+                    <button type="submit" name="delete" class="delete-btn" id="delete-btn">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+                {% if prediction %}
+                    <h2>Prediction: {{ prediction }}</h2>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <p>Made By:</p>
+        <p>Jonathan Colasante</p>
+        <div class="footer-icons">
+            <a href="https://github.com/jonathancolasante" target="_blank"><img src="{{ url_for('static', filename='icon1.png') }}" alt="Icon 1" class="footer-icon"></a>
+            <a href="https://www.linkedin.com/in/jcolasante1/" target="_blank"><img src="{{ url_for('static', filename='icon2.png') }}" alt="Icon 2" class="footer-icon"></a>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            toggleButtons();
+        };
+    </script>
+</body>
+</html>
