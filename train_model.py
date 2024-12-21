@@ -6,9 +6,9 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-# For Mac support, uncomment these two lines below. This will disable the GPU and only use the CPU
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-# tf.config.set_visible_devices
+# Comment out the following two lines to disable GPU support
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+tf.config.set_visible_devices
 
 # Check if directories exist
 train_dir = "data/train"  # Directory containing the training data

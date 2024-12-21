@@ -28,44 +28,23 @@ To run and test this project yourself:
    git clone https://github.com/jonathancolasante/Neural-Network-Emotion-Classifier.git
    cd Neural-Network-Emotion-Classifier
    ```
+
+2. **Build the Docker image**:
    
-2. **Install the required packages:**
+   - Make sure Docker is properly installed on your system and the Docker service is running.
 
    ```bash
-   pip install ...
+   docker build -t emotion-classifier .
    ```
-   
-3. **Run the Flask web application:**
+
+2. **Run the Docker container**:
 
    ```bash
-   python app.py
+   docker run -p 8000:8000 --name emotion-classifier-container emotion-classifier
    ```
+
+Once the container is running, you can access the web application in your browser at http://localhost:8000. Upload your own images to test the emotion prediction.
    
-   This will start the web app, and you can access it in your web browser. Upload your own images to test the emotion prediction.
 
-4. **Train your own model:**
 
-   If you want to train the model yourself, run:
 
-   ```bash
-   python train_model.py
-   ```
-   
-   This will preprocess the data, train the CNN model, and save the best-performing model weights based on validation accuracy.
-
-### Notes
-
-1. **Mac Users:**
-
-   Users on Mac may face issues trying to run the web app or train the model. In that case, try uncommenting these two lines in the files:
-
-   ```python
-   # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-   # tf.config.set_visible_devices([], 'GPU')
-   ```
-
-   Mac users may also need to set up a custom environment for TensorFlow
-
-2. **Data Set:**
-
-   Due to the size of the dataset, I was not able to provide it in the repository. Users can modify the code to use their own data or simply download the FER-2013 dataset online.
