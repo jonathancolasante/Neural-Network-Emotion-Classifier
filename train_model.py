@@ -89,7 +89,7 @@ model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Ada
 # Callback to save the best model weights based on validation accuracy
 model_checkpoint = ModelCheckpoint(
     filepath='trained_model.h5',
-    monitor='value_accuracyuracy',
+    monitor='val_accuracy',  # Corrected typo
     save_best_only=True,
     save_weights_only=True,
     mode='max',
@@ -108,10 +108,10 @@ training_history = model.fit(
 
 # Plot training and validation loss
 training_loss = training_history.history['loss']
-value_loss = training_history.history['value_loss']
+validation_loss = training_history.history['val_loss']  # Correct key
 epochs = range(1, len(training_loss) + 1)
 plt.plot(epochs, training_loss, 'bo', label='Training loss')
-plt.plot(epochs, value_loss, 'b', label='Validation loss')
+plt.plot(epochs, validation_loss, 'b', label='Validation loss')  # Corrected label
 plt.title('Training and Validation Loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
@@ -121,9 +121,9 @@ plt.savefig(loss_plot_path)
 
 # Plot training and validation accuracy
 training_accuracy = training_history.history['accuracy']
-value_accuracy = training_history.history['val_accuracy']
+validation_accuracy = training_history.history['val_accuracy']  # Correct key
 plt.plot(epochs, training_accuracy, 'bo', label='Training Accuracy')
-plt.plot(epochs, value_accuracy, 'b', label='Validation Accuracy')
+plt.plot(epochs, validation_accuracy, 'b', label='Validation Accuracy')  # Corrected label
 plt.title('Training and Validation Accuracy')
 plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
