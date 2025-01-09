@@ -1,16 +1,18 @@
 import os
 from matplotlib import pyplot as plt
+import numpy as np
+import seaborn as sns 
+from sklearn.metrics import confusion_matrix
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-# Comment out the following two lines to disable GPU support
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-tf.config.set_visible_devices
+#Uncomment out the following two lines to disable GPU support
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+#tf.config.set_visible_devices
 
-# Check if directories exist
 train_dir = "data/train"  # Directory containing the training data
 test_dir = "data/test"    # Directory containing the validation data
 
@@ -81,17 +83,17 @@ model.add(Flatten())
 model.add(Dense(256, activation='relu'))
 model.add(BatchNormalization())
 model.add(Dropout(0.5))
-model.add(Dense(7, activation='softmax'))  # Output layer with 7 classes for emotions
+model.add(Dense(4, activation='softmax'))
 
 # Compile the model
 model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
 
 # Callback to save the best model weights based on validation accuracy
 model_checkpoint = ModelCheckpoint(
-    filepath='trained_model.h5',
-    monitor='val_accuracy',  # Corrected typo
+    filepath='trained_model.keras',
+    monitor='val_accuracy',
     save_best_only=True,
-    save_weights_only=True,
+    save_weights_only=False,
     mode='max',
     verbose=1
 )
@@ -106,27 +108,45 @@ training_history = model.fit(
     callbacks=[model_checkpoint]
 )
 
-# Plot training and validation loss
-training_loss = training_history.history['loss']
-validation_loss = training_history.history['val_loss']  # Correct key
-epochs = range(1, len(training_loss) + 1)
-plt.plot(epochs, training_loss, 'bo', label='Training loss')
-plt.plot(epochs, validation_loss, 'b', label='Validation loss')  # Corrected label
-plt.title('Training and Validation Loss')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.legend()
-loss_plot_path = os.path.join(output_dir, 'loss_graph.jpg')
-plt.savefig(loss_plot_path)
-
 # Plot training and validation accuracy
 training_accuracy = training_history.history['accuracy']
-validation_accuracy = training_history.history['val_accuracy']  # Correct key
+validation_accuracy = training_history.history['val_accuracy']
 plt.plot(epochs, training_accuracy, 'bo', label='Training Accuracy')
-plt.plot(epochs, validation_accuracy, 'b', label='Validation Accuracy')  # Corrected label
+plt.plot(epochs, validation_accuracy, 'b', label='Validation Accuracy')
 plt.title('Training and Validation Accuracy')
 plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.legend()
 accuracy_plot_path = os.path.join(output_dir, 'accuracy_graph.jpg')
 plt.savefig(accuracy_plot_path)
+plt.close()
+
+# Plot training and validation loss
+training_loss = training_history.history['loss']
+validation_loss = training_history.history['val_loss']
+epochs = range(1, len(training_loss) + 1)
+plt.plot(epochs, training_loss, 'bo', label='Training loss')
+plt.plot(epochs, validation_loss, 'b', label='Validation loss')
+plt.title('Training and Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+loss_plot_path = os.path.join(output_dir, 'loss_graph.jpg')
+plt.savefig(loss_plot_path)
+plt.close()
+
+# Compute the confusion matrix
+validation_labels = validation_data_generator.classes
+validation_pred_probs = model.predict(validation_data_generator)
+validation_pred_labels = np.argmax(validation_pred_probs, axis=1)
+confusion_mtx = confusion_matrix(validation_labels, validation_pred_labels)
+class_names = list(training_data_generator.class_indices.keys())
+sns.set_theme()
+sns.heatmap(confusion_mtx, annot=True, fmt='d', cmap='YlGnBu', 
+            xticklabels=class_names, yticklabels=class_names)
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.title('Confusion Matrix')
+matrix_plot_path = os.path.join(output_dir, 'confusion_matrix.jpg')
+plt.savefig(matrix_plot_path)
+plt.close()
