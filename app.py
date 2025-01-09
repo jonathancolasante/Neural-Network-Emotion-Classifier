@@ -5,6 +5,7 @@ from flask import Flask, request, render_template
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization
 
 app = Flask(__name__)
@@ -45,14 +46,13 @@ def create_model():
     model.add(Dense(256, activation='relu'))
     model.add(BatchNormalization())
     model.add(Dropout(0.5))
-    model.add(Dense(7, activation='softmax')) # Output layer with 7 classes for emotions
+    model.add(Dense(4, activation='softmax')) # Output layer with 7 classes for emotions
 
     return model
 
 # Load the trained model
-model = create_model()
-model.load_weights('trained_model.h5')
-
+#model = create_model()
+model = load_model('trained_model.keras')  # Load the full model from the new .keras file
 # Function to predict the emotion from an image
 def predict_emotion(image_path):
     # Load and preprocess the image
@@ -63,10 +63,10 @@ def predict_emotion(image_path):
 
     # Make a prediction
     predictions = model.predict(img_array)
-    emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    emotion_labels = ['angry', 'happy', 'neutral', 'sad']
     predicted_emotion = emotion_labels[np.argmax(predictions)]
 
-    print(f'Predicted Emotion: {predicted_emotion}')
+    print(f'Predicted Emotion: {predictions}')
     return predicted_emotion
 
 @app.route('/', methods=['GET', 'POST'])
