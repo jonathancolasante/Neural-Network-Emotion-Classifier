@@ -121,6 +121,7 @@ plt.ylabel('Loss')
 plt.legend()
 loss_plot_path = os.path.join(output_dir, 'loss_graph.jpg')
 plt.savefig(loss_plot_path)
+plt.close()
 
 # Plot training and validation accuracy
 training_accuracy = training_history.history['accuracy']
@@ -133,6 +134,7 @@ plt.ylabel('Accuracy')
 plt.legend()
 accuracy_plot_path = os.path.join(output_dir, 'accuracy_graph.jpg')
 plt.savefig(accuracy_plot_path)
+plt.close()
 
 # Get the true labels and predicted labels for the validation set
 validation_labels = validation_data_generator.classes
@@ -150,3 +152,4 @@ plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 matrix_plot_path = os.path.join(output_dir, 'confusion_matrix.jpg')
 plt.savefig(matrix_plot_path)
+plt.close()

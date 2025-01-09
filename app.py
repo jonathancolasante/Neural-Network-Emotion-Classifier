@@ -4,54 +4,18 @@ import numpy as np
 from flask import Flask, request, render_template
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization
 
 app = Flask(__name__)
 
 # Comment out the following two lines to disable GPU support
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-tf.config.set_visible_devices([], 'GPU')
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+#tf.config.set_visible_devices([], 'GPU')
 
 # Supported image extensions
 supported_image_exts = ['jpeg', 'jpg', 'png']
 
-# Function to create the model architecture
-def create_model():
-    model = Sequential()
-
-    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48, 48, 1)))
-    model.add(BatchNormalization())
-    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(Conv2D(256, kernel_size=(3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(Conv2D(256, kernel_size=(3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
-    model.add(BatchNormalization())
-    model.add(Dropout(0.5))
-    model.add(Dense(4, activation='softmax')) # Output layer with 7 classes for emotions
-
-    return model
-
 # Load the trained model
-#model = create_model()
 model = load_model('trained_model.keras')  # Load the full model from the new .keras file
 # Function to predict the emotion from an image
 def predict_emotion(image_path):
@@ -66,7 +30,6 @@ def predict_emotion(image_path):
     emotion_labels = ['angry', 'happy', 'neutral', 'sad']
     predicted_emotion = emotion_labels[np.argmax(predictions)]
 
-    print(f'Predicted Emotion: {predictions}')
     return predicted_emotion
 
 @app.route('/', methods=['GET', 'POST'])
