@@ -102,24 +102,11 @@ model_checkpoint = ModelCheckpoint(
 training_history = model.fit(
     training_data_generator,
     steps_per_epoch=len(training_data_generator),
-    epochs=50,
+    epochs=100,
     validation_data=validation_data_generator,
     validation_steps=len(validation_data_generator),
     callbacks=[model_checkpoint]
 )
-
-# Plot training and validation accuracy
-training_accuracy = training_history.history['accuracy']
-validation_accuracy = training_history.history['val_accuracy']
-plt.plot(epochs, training_accuracy, 'bo', label='Training Accuracy')
-plt.plot(epochs, validation_accuracy, 'b', label='Validation Accuracy')
-plt.title('Training and Validation Accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend()
-accuracy_plot_path = os.path.join(output_dir, 'accuracy_graph.jpg')
-plt.savefig(accuracy_plot_path)
-plt.close()
 
 # Plot training and validation loss
 training_loss = training_history.history['loss']
@@ -133,6 +120,19 @@ plt.ylabel('Loss')
 plt.legend()
 loss_plot_path = os.path.join(output_dir, 'loss_graph.jpg')
 plt.savefig(loss_plot_path)
+plt.close()
+
+# Plot training and validation accuracy
+training_accuracy = training_history.history['accuracy']
+validation_accuracy = training_history.history['val_accuracy']
+plt.plot(epochs, training_accuracy, 'bo', label='Training Accuracy')
+plt.plot(epochs, validation_accuracy, 'b', label='Validation Accuracy')
+plt.title('Training and Validation Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+accuracy_plot_path = os.path.join(output_dir, 'accuracy_graph.jpg')
+plt.savefig(accuracy_plot_path)
 plt.close()
 
 # Compute the confusion matrix
