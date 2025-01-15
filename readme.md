@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-In this project, I built a Convolutional Neural Network (CNN) to classify emotions from images. The model was trained on the FER-2013 dataset. The model can recognize seven emotions: Angry, Disgust, Fear, Happy, Sad, Surprise, and Neutral. Additionally, I created a Flask web application where you can upload your own images and receive emotion predictions based on the trained model.
+In this project, I built a Convolutional Neural Network (CNN) to classify emotions from images. The model was trained on the FER-2013 dataset. The model can recognize four emotions: Angry, Happy, Sad,and Neutral. Additionally, I created a Flask web application where you can upload your own images and receive emotion predictions based on the trained model.
 
 ### Key Features
 
