@@ -1,5 +1,4 @@
 # Emotion Classification with CNN
-![Screenshot 2024-08-15 at 13-00-19 Image Emotion Classifier(3)](https://github.com/user-attachments/assets/753c6ed2-8673-4448-a04e-198169bacd0e)
 
 ## Project Overview
 
