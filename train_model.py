@@ -19,8 +19,8 @@ test_dir = "data/test"    # Directory containing the validation data
 if not os.path.exists(train_dir) or not os.path.exists(test_dir):
     raise ValueError("Train or test directory not found. Please check the paths.")
 
-# Directory for saving training graphs
-output_dir = 'training_graphs'
+# Directory for saving training logs
+output_dir = 'training_logs'
 os.makedirs(output_dir, exist_ok=True)
 
 # Image data generators for training and validation data
@@ -86,7 +86,11 @@ model.add(Dropout(0.5))
 model.add(Dense(4, activation='softmax'))
 
 # Compile the model
-model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
+model.compile(
+    loss="categorical_crossentropy", 
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), 
+    metrics=['accuracy']
+)
 
 # Callback to save the best model weights based on validation accuracy
 model_checkpoint = ModelCheckpoint(
